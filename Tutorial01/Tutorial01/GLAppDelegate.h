@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLOpenGLView.h"
 
 @class GLMainViewController;
 @interface GLAppDelegate : UIResponder <UIApplicationDelegate>
 
+@property (strong, nonatomic) GLOpenGLView *glview;
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) GLMainViewController *mainView;
+
 
 @end

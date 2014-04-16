@@ -9,7 +9,9 @@
 #import "GLAppDelegate.h"
 #import "GLMainViewController.h"
 
+
 @implementation GLAppDelegate
+@synthesize glview;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -17,8 +19,11 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor redColor];
     // add mainview
-    self.mainView = [[GLMainViewController alloc] init];
-    self.window.rootViewController = self.mainView;
+//    self.mainView = [[GLMainViewController alloc] init];
+//    self.window.rootViewController = self.mainView;
+    // 添加 open GL view
+    glview = [[GLOpenGLView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self.window addSubview:glview];
     
     [self.window makeKeyAndVisible];
     return YES;
