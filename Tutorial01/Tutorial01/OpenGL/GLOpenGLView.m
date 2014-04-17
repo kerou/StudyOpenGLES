@@ -56,7 +56,7 @@
     eaglLayer.opaque = YES;
     // 设置描绘属性 不维持渲染内容以及颜色格式为rgba8
     eaglLayer.drawableProperties =@{kEAGLDrawablePropertyRetainedBacking:[NSNumber numberWithBool:NO],
-                                     kEAGLDrawablePropertyColorFormat   :kEAGLColorFormatRGBA8};
+                                    kEAGLDrawablePropertyColorFormat    :kEAGLColorFormatRGBA8};
 
 
 }
@@ -68,12 +68,14 @@
     EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES2;
     // 初始化上下文
     context = [[EAGLContext alloc] initWithAPI:api];
-    if (! context) {
+    if (! context)
+    {
         NSLog(@"初始化上下文失败！");
         exit(1);
     }
     // 设置为当前上下文
-    if (! [EAGLContext setCurrentContext:context]) {
+    if (! [EAGLContext setCurrentContext:context])
+    {
         NSLog(@"设置当前上下文失败！");
         exit(1);
     }
