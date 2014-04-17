@@ -65,4 +65,50 @@
     return [self loadShader:type withString:shaderString];
 }
 
+// 创建绘制程序
++(GLuint)loadProgram:(NSString *)vertexShaderFilepath withFragmentShaderFilepath:(NSString *)fragmentShaderFilepath
+{
+    GLuint vertexShader  = [GLESUtils loadShader:GL_VERTEX_SHADER withFilePath:vertexShaderFilepath];
+    GLuint fragmentShader = [GLESUtils loadShader:GL_FRAGMENT_SHADER withFilePath:fragmentShaderFilepath];
+    // 创建程序 附加着色器械
+    GLuint programHandle = glCreateProgram();
+    if (! programHandle) {
+        NSLog(@"Failed to create program.");
+        return 0;
+    }
+    glAttachShader(programHandle, vertexShader);
+    glAttachShader(programHandle, fragmentShader);
+    // 链接程序
+    glLinkProgram(programHandle);
+    // 检查链接状态
+    GLint linked;
+    glGetProgramiv(programHandle, GL_LINK_STATUS, &linked);
+    if (! linked)
+    {
+        GLint infoLen = 0;
+        glGetProgramiv(programHandle, GL_INFO_LOG_LENGTH, &infoLen);
+        
+        if (infoLen > 1)
+        {
+            char *infoLog = malloc(sizeof(char) *infoLen);
+            glGetProgramInfoLog(programHandle, infoLen, NULL, infoLog);
+            NSLog(@"Error linking program:\n%s\n", infoLog );
+            
+            free (infoLog );
+        }
+        
+        glDeleteProgram(programHandle);
+        programHandle = 0;
+        return 0;
+    }
+
+    // 清除资源
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+    
+    return programHandle;
+}
+
+
+
 @end

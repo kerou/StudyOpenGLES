@@ -17,5 +17,7 @@
 // file path
 + (GLuint)loadShader:(GLenum)type withFilePath:(NSString *)shaderFilePath;
 
+// 创建绘制程序
++(GLuint)loadProgram:(NSString *)vertexShaderFilepath withFragmentShaderFilepath:(NSString *)fragmentShaderFilepath;
 
 @end
