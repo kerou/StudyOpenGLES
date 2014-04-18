@@ -43,7 +43,7 @@
     CGFloat viewHeg = self.view.bounds.size.height-400;
     UIView *otherView = [[UIView alloc] initWithFrame:CGRectMake(0,400,320,viewHeg)];
     otherView.backgroundColor = [UIColor brownColor];
-    
+    // 
     NSArray *nameArray = @[@"x:",@"y:",@"z:",@"rotate x:",@"scale z:"];
     for (int i = 0; i < 5; i ++) {
         // 属性
@@ -52,7 +52,7 @@
         nameLabel.textAlignment = NSTextAlignmentRight;
         [otherView addSubview:nameLabel];
         // slider
-        UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(75, viewHeg/5.0 * i, 150, 30)];
+        UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(75, viewHeg/5.0 * i, 200, 30)];
         slider.tag = i;
             if (i == 0 || i == 1)
             {
@@ -61,25 +61,39 @@
                 [slider setValue:0];
             }else if (i == 2)
             {
-                [slider setMaximumValue:3.0f];
-                [slider setMinimumValue:-3.0f];
-                [slider setValue:1];
+                [slider setMaximumValue:-1.0f];
+                [slider setMinimumValue:-10.0f];
+                [slider setValue:-5.5];
             }
             else if (i == 3)
             {
-                [slider setMaximumValue:0.5f];
-                [slider setMinimumValue:2.0f];
-                [slider setValue:1];
+                [slider setMaximumValue:180.0f];
+                [slider setMinimumValue:-180.0f];
+                [slider setValue:0];
             }
             else if (i == 4)
             {
-                [slider setMaximumValue:-180.0f];
-                [slider setMinimumValue:180.0f];
-                [slider setValue:-5.5];
+                [slider setMaximumValue:2.0f];
+                [slider setMinimumValue:0.5f];
+                [slider setValue:1];
             }
         [slider addTarget:self action:@selector(sliderChange:) forControlEvents:UIControlEventValueChanged];
         [otherView addSubview:slider];
     }
+    // button
+    NSArray *btnNameArray = @[@"自动",@"还原"];
+    for (int i = 0; i < 2; i ++) {
+        
+        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [btn setFrame:CGRectMake(0, i * 50, 50, 40)];
+        [btn setTitle:btnNameArray[i] forState:UIControlStateNormal];
+        [btn addTarget:self action:@selector(btnMethod:) forControlEvents:UIControlEventTouchUpInside];
+        btn.tag = i;
+        [otherView addSubview:btn];
+        
+    }
+    
+    
     [self.view addSubview:otherView];
   
 }
@@ -93,7 +107,6 @@
 }
 - (void)sliderChange:(UISlider *)sender
 {
-    NSLog(@"%d,%f",sender.tag,sender.value);
     switch (sender.tag) {
         case 0:
         {
@@ -135,7 +148,27 @@
     }
 
 }
+- (void)btnMethod:(UIButton *)sender
+{
+    switch (sender.tag) {
+            // 自动
+        case 0:
+        {
+            break;
+        }
+            // 还原
+        case 1:
+        {
+            [self setValueForGLView];
+            [openGLView updateTransfrom];
+            [openGLView render];
+            break;
+        }
+        default:
+            break;
+    }
 
+}
 
 - (void)viewDidDisappear:(BOOL)animated
 {

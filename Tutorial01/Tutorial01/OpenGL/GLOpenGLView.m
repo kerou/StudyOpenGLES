@@ -14,6 +14,8 @@
 
 // 设置layer属性
 - (void)setupLayer;
+// 自动旋转
+@property (nonatomic, strong) CADisplayLink *displayLink;
 
 @end
 
@@ -25,7 +27,7 @@
 @synthesize frameBuffer,colorRenderBuffer;
 @synthesize programHandle,positionSlot,modelViewSlot,projectionSlot;
 @synthesize posX,posY,posZ,rotateX,scaleZ;
-
+@synthesize displayLink;
 
 - (id)initWithFrame:(CGRect)frame
 {
