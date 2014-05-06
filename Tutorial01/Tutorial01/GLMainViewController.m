@@ -154,6 +154,15 @@
             // 自动
         case 0:
         {
+            [openGLView toggleDisplayLink];
+            if ([sender.titleLabel.text isEqualToString:@"停止"])
+            {
+                [sender setTitle:@"自动" forState:UIControlStateNormal];
+            }
+            else
+            {
+                [sender setTitle:@"停止" forState:UIControlStateNormal];
+            }
             break;
         }
             // 还原

@@ -25,7 +25,7 @@
 @synthesize eaglLayer;
 @synthesize context;
 @synthesize frameBuffer,colorRenderBuffer;
-@synthesize programHandle,positionSlot,modelViewSlot,projectionSlot;
+@synthesize programHandle,positionSlot,modelViewSlot,projectionSlot,colorSlot;
 @synthesize posX,posY,posZ,rotateX,scaleZ;
 @synthesize displayLink;
 
@@ -274,6 +274,114 @@
     
     context = nil;
 
+}
+
+// 自动旋转
+- (void)displayLinkCallback:(CADisplayLink *)displaylink
+{
+    self.rotateX += displaylink.duration * 90;
+    [self updateTransfrom];
+    [self render];
+
+}
+- (void)toggleDisplayLink
+{
+    if (displayLink == nil) {
+        displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkCallback:)];
+        [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    }
+    else
+    {
+        [displayLink invalidate];
+        [displayLink removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        displayLink = nil;
+    }
+}
+////****05****///
+- (void)render05
+{
+    
+}
+- (void)clearup05
+{
+    
+}
+
+- (void)toggleDisplayLink05
+{
+    
+}
+
+- (void)updateShoulderTransform05
+{
+    ksMatrixLoadIdentity(&_shoulderModelViewMatrix05);
+    ksMatrixTranslate(&_shoulderModelViewMatrix05, -0.0, 0.0, -5.5);
+    // rotate shoulder
+    ksMatrixRotate(&_shoulderModelViewMatrix05, self.rotateShoulder05, 0.0, 0.0, 1.0);
+    // scale cube to the shoulder
+    ksMatrixCopy(&modelViewMatrix, &_shoulderModelViewMatrix05);
+    ksMatrixScale(&modelViewMatrix, 1.5, 0.6, 0.6);
+    // load
+    glUniformMatrix4fv(modelViewSlot, 1, GL_FALSE, (GLfloat *)&modelViewMatrix.m[0][0]);
+}
+- (void)updateElbowTransform05
+{
+    ksMatrixCopy(&_elbowModelViewMatrix05, &_shoulderModelViewMatrix05);
+    ksMatrixTranslate(&_elbowModelViewMatrix05, 1.5, 0.0, 0.0);
+    ksMatrixRotate(&_elbowModelViewMatrix05, self.rotateElbow05, 0.0, 0.0, 1.0);
+    ksMatrixCopy(&modelViewMatrix, &_elbowModelViewMatrix05);
+    ksMatrixScale(&modelViewMatrix, 1.0,0.4, 0.4);
+    glUniformMatrix4fv(modelViewSlot, 1, GL_FALSE, (GLfloat *)&modelViewMatrix.m[0][0]);
+    
+}
+
+- (void)resetTransform05
+{
+    
+}
+
+
+- (void)updateRectangleTransform05
+{
+    
+}
+
+- (void)updateColorCubeTransform05
+{
+    
+}
+
+- (void)drawColorCube05
+{
+    
+}
+
+
+- (void)drawCube05:(ksVec4)color
+{
+    GLfloat vertices[] = {
+        0.0f, -0.5f, 0.5f,
+        0.0f, 0.5f, 0.5f,
+        1.0f, 0.5f, 0.5f,
+        1.0f, -0.5f, 0.5f,
+        
+        1.0f, -0.5f, -0.5f,
+        1.0f, 0.5f, -0.5f,
+        0.0f, 0.5f, -0.5f,
+        0.0f, -0.5f, -0.5f,
+    };
+    
+    GLubyte indices[] = {
+        0, 1, 1, 2, 2, 3, 3, 0,
+        4, 5, 5, 6, 6, 7, 7, 4,
+        0, 7, 1, 6, 2, 5, 3, 4
+    };
+    
+    glVertexAttrib4f(colorSlot, color.x, color.y, color.z, color.w);
+    glVertexAttribPointer(positionSlot, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+    glEnableVertexAttribArray(positionSlot);
+    glDrawElements(GL_LINES, sizeof(indices)/sizeof(GLubyte), GL_UNSIGNED_BYTE, indices);
+  
 }
 
 @end

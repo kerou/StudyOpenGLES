@@ -18,7 +18,12 @@
     ksMatrix4 modelViewMatrix;
     // 投影矩阵
     ksMatrix4 projectionMatrix;
-
+    
+    ////****05****///
+    ksMatrix4 _shoulderModelViewMatrix05;
+    ksMatrix4 _elbowModelViewMatrix05;
+    float _rotateColorCube05;
+    CADisplayLink *displayLink05;
 }
 
 @property (strong, nonatomic) CAEAGLLayer *eaglLayer;
@@ -30,6 +35,7 @@
 @property (assign, nonatomic) GLuint positionSlot;
 @property (assign, nonatomic) GLuint modelViewSlot;
 @property (assign, nonatomic) GLuint projectionSlot;
+@property (assign, nonatomic) GLuint colorSlot;
 // 图像移动 变形
 @property (assign, nonatomic) CGFloat posX;     // x 轴上移动
 @property (assign, nonatomic) CGFloat posY;     // y 轴上移动
@@ -43,5 +49,24 @@
 - (void)render;
 // clear
 - (void)clear;
+// 自动旋转
+- (void)displayLinkCallback:(CADisplayLink *)displayLink;
+- (void)toggleDisplayLink;
+
+////****05****///
+@property (nonatomic,assign) float rotateShoulder05;
+@property (nonatomic,assign) float rotateElbow05;
+- (void)render05;
+- (void)clearup05;
+- (void)toggleDisplayLink05;
+- (void)updateShoulderTransform05;
+- (void)updateElbowTransform05;
+- (void)resetTransform05;
+
+- (void)updateRectangleTransform05;
+- (void)updateColorCubeTransform05;
+- (void)drawColorCube05;
+
+- (void)drawCube05:(ksVec4)color;
 
 @end
